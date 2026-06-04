@@ -9,12 +9,29 @@ st.title("Peloton Yoga Lookup")
 
 search = st.text_input("Search by title, instructor, duration, air date, or description")
 
-search_cols = ["title", "instructor", "duration_min", "original_air_date", "description", "peloton_url", "image_url"]
+search_cols = [
+    "title",
+    "instructor",
+    "duration_min",
+    "original_air_date",
+    "description"
+]
 
-mask = df[search_cols].astype(str).apply(
-    lambda row: search.lower() in " ".join(row).lower(),
-    axis=1
-)
+if search:
+    mask = df[search_cols].fillna("").astype(str).apply(
+        lambda row: search.lower() in " ".join(row.tolist()).lower(),
+        axis=1
+    )
+
+    results = df[mask].sort_values(
+        ["times_taken", "last_taken"],
+        ascending=[False, False]
+    )
+else:
+    results = df.sort_values(
+        ["times_taken", "last_taken"],
+        ascending=[False, False]
+    )
 
 results = df[mask]
 
