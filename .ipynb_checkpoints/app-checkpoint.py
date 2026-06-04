@@ -32,6 +32,19 @@ instructor_filter = st.multiselect(
     sorted(df["instructor"].dropna().unique())
 )
 
+sort_option = st.selectbox(
+    "Sort by",
+    [
+        "Most repeated",
+        "Least recently taken",
+        "Most recently taken",
+        "Newest class",
+        "Oldest class",
+        "Shortest duration",
+        "Longest duration",
+        "Highest difficulty",
+    ]
+)
 results = df.copy()
 
 if search:
@@ -48,10 +61,29 @@ if duration_filter:
 if instructor_filter:
     results = results[results["instructor"].isin(instructor_filter)]
 
-results = results.sort_values(
-    ["times_taken", "last_taken"],
-    ascending=[False, False]
-)
+if sort_option == "Most repeated":
+    results = results.sort_values(["times_taken", "last_taken"], ascending=[False, False])
+
+elif sort_option == "Least recently taken":
+    results = results.sort_values("last_taken", ascending=True)
+
+elif sort_option == "Most recently taken":
+    results = results.sort_values("last_taken", ascending=False)
+
+elif sort_option == "Newest class":
+    results = results.sort_values("original_air_date", ascending=False)
+
+elif sort_option == "Oldest class":
+    results = results.sort_values("original_air_date", ascending=True)
+
+elif sort_option == "Shortest duration":
+    results = results.sort_values("duration_min", ascending=True)
+
+elif sort_option == "Longest duration":
+    results = results.sort_values("duration_min", ascending=False)
+
+elif sort_option == "Highest difficulty":
+    results = results.sort_values("difficulty", ascending=False)
 
 st.subheader("Rediscover")
 
@@ -101,6 +133,7 @@ for _, row in results.iterrows():
         f"Taken {row['times_taken']}x • Last taken {row['last_taken_display']} "
         f"({row['days_since_taken']} days ago)"
     )
+    st.write(f"{len(results)} classes found")
 
     st.link_button("Open in Peloton", row["peloton_url"])
 
