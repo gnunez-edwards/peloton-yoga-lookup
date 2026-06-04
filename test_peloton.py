@@ -67,7 +67,7 @@ print(url)
 all_workouts = peloton.GetRecentWorkouts(600)
 
 
-# In[7]:
+# In[33]:
 
 
 disciplines = set(
@@ -78,7 +78,7 @@ disciplines = set(
 print(disciplines)
 
 
-# In[8]:
+# In[34]:
 
 
 yoga = [
@@ -89,7 +89,7 @@ yoga = [
 print(len(yoga))
 
 
-# In[17]:
+# In[35]:
 
 
 import pandas as pd
@@ -130,7 +130,7 @@ summary = (
     .agg(
         times_taken=("taken_date", "count"),
         last_taken=("taken_date", "max"),
-        dates_taken=("taken_date", lambda x: ", ".join(str(d) for d in sorted(x)))
+        dates_taken=("taken_date", lambda x: ", ".join(pd.to_datetime(d).strftime("%m/%d/%Y") for d in sorted(x)))
     )
     .reset_index()
     .sort_values(["times_taken", "last_taken"], ascending=[False, False])
@@ -143,21 +143,25 @@ summary["search_text"] = (
     summary["duration_min"].fillna("").astype(str) + " " +
     summary["original_air_date"].fillna("").astype(str)
 )
+summary["days_since_taken"] = (
+    pd.Timestamp.today().normalize() -
+    pd.to_datetime(summary["last_taken"])
+).dt.days
 
 
-# In[18]:
+# In[36]:
 
 
 summary.to_csv("peloton_yoga_lookup.csv", index=False)
 
 
-# In[19]:
+# In[37]:
 
 
 summary.sort_values("times_taken", ascending=False).head(20)
 
 
-# In[20]:
+# In[38]:
 
 
 ride_id = workout["ride"]["id"]
