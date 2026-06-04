@@ -89,7 +89,7 @@ yoga = [
 print(len(yoga))
 
 
-# In[13]:
+# In[17]:
 
 
 import pandas as pd
@@ -136,20 +136,28 @@ summary = (
     .sort_values(["times_taken", "last_taken"], ascending=[False, False])
 )
 
+summary["search_text"] = (
+    summary["title"].fillna("").astype(str) + " " +
+    summary["instructor"].fillna("").astype(str) + " " +
+    summary["description"].fillna("").astype(str) + " " +
+    summary["duration_min"].fillna("").astype(str) + " " +
+    summary["original_air_date"].fillna("").astype(str)
+)
 
-# In[14]:
+
+# In[18]:
 
 
 summary.to_csv("peloton_yoga_lookup.csv", index=False)
 
 
-# In[15]:
+# In[19]:
 
 
 summary.sort_values("times_taken", ascending=False).head(20)
 
 
-# In[16]:
+# In[20]:
 
 
 ride_id = workout["ride"]["id"]
@@ -157,6 +165,12 @@ ride_id = workout["ride"]["id"]
 url = f"https://members.onepeloton.com/classes/yoga?modal=classDetailsModal&classId={ride_id}"
 
 print(url)
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:

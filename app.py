@@ -18,9 +18,10 @@ search_cols = [
 ]
 
 if search:
-    mask = df[search_cols].fillna("").astype(str).apply(
-        lambda row: search.lower() in " ".join(row.tolist()).lower(),
-        axis=1
+    mask = df["search_text"].str.contains(
+        search,
+        case=False,
+        na=False
     )
 
     results = df[mask].sort_values(
