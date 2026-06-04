@@ -36,8 +36,6 @@ else:
         ascending=[False, False]
     )
 
-results = df[mask]
-
 for _, row in results.iterrows():
     st.subheader(row["title"])
 
