@@ -130,7 +130,7 @@ summary = (
     .agg(
         times_taken=("taken_date", "count"),
         last_taken=("taken_date", "max"),
-        dates_taken=("taken_date", lambda x: ", ".join(pd.to_datetime(d).strftime("%m/%d/%Y") for d in sorted(x)))
+        dates_taken=("taken_date", lambda x: ", ".join(pd.to_datetime(d).strftime("%d/%m/%Y") for d in sorted(x)))
     )
     .reset_index()
     .sort_values(["times_taken", "last_taken"], ascending=[False, False])
