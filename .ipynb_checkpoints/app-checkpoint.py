@@ -8,8 +8,8 @@ df = pd.read_csv("peloton_yoga_lookup.csv")
 df["last_taken"] = pd.to_datetime(df["last_taken"])
 df["original_air_date"] = pd.to_datetime(df["original_air_date"], errors="coerce")
 
-df["last_taken_display"] = df["last_taken"].dt.strftime("%m/%d/%Y")
-df["original_air_date_display"] = df["original_air_date"].dt.strftime("%m/%d/%Y")
+df["last_taken_display"] = df["last_taken"].dt.strftime("%d/%m/%Y")
+df["original_air_date_display"] = df["original_air_date"].dt.strftime("%d/%m/%Y")
 
 if "days_since_taken" not in df.columns:
     df["days_since_taken"] = (
@@ -52,6 +52,41 @@ results = results.sort_values(
     ["times_taken", "last_taken"],
     ascending=[False, False]
 )
+
+st.subheader("Rediscover")
+
+min_days = st.slider(
+    "Only show classes I have not taken in at least this many days",
+    min_value=0,
+    max_value=365,
+    value=60
+)
+
+rediscover = results[results["days_since_taken"] >= min_days]
+
+if st.button("Pick a class for me"):
+    if rediscover.empty:
+        st.warning("No classes match that rediscovery filter.")
+    else:
+        pick = rediscover.sample(1).iloc[0]
+
+        st.success("Today's rediscovered class")
+
+        if pd.notna(pick.get("image_url")):
+            st.image(pick["image_url"], width=250)
+
+        st.write(f"{pick['title']}")
+        st.write(f"Instructor: {pick['instructor']}")
+        st.write(f"Duration: {pick['duration_min']} min")
+        st.write(f"Taken {pick['times_taken']}x")
+        st.write(
+            f"Last taken {pick['last_taken_display']} "
+            f"({pick['days_since_taken']} days ago)"
+        )
+
+        st.link_button("Open this class", pick["peloton_url"])
+
+st.divider()
 
 for _, row in results.iterrows():
     st.subheader(row["title"])
