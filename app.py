@@ -7,10 +7,6 @@ df = pd.read_csv("peloton_yoga_lookup.csv")
 
 st.title("Peloton Yoga Lookup")
 
-search = st.text_input(
-    "Search by title, instructor, duration, air date, or description"
-)
-
 search_cols = [
     "title",
     "instructor",
@@ -34,13 +30,14 @@ if search:
         ["times_taken", "last_taken"],
         ascending=[False, False]
     )
-
 else:
     results = df.sort_values(
         ["times_taken", "last_taken"],
         ascending=[False, False]
     )
-    
+
+results = df[mask]
+
 for _, row in results.iterrows():
     st.subheader(row["title"])
 
