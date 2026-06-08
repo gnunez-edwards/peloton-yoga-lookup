@@ -19,7 +19,7 @@ workouts = peloton.GetRecentWorkouts(5)
 
 print("Number of workouts:", len(workouts))
 
-for workou in workous:
+for workout in workous:
     print(workout.keys())
     print(workout)
     print("-" * 50)
