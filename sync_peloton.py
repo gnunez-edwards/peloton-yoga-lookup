@@ -19,7 +19,7 @@ workouts = peloton.GetRecentWorkouts(5)
 
 print("Number of workouts:", len(workouts))
 
-for workout in workouts:
+for workou in workous:
     print(workout.keys())
     print(workout)
     print("-" * 50)
@@ -149,6 +149,9 @@ summary["days_since_taken"] = (
     pd.to_datetime(summary["last_taken"])
 ).dt.days
 
+summary["original_air_date"]=summary["original_air_date"].dt.strftime("%m/%d/%Y")
+summary["last_taken"]=summary["original_air_date"].dt.strftime("%m/%d/%Y")
+summary["dates_taken"]=summary["original_air_date"].dt.strftime("%m/%d/%Y")
 
 # In[36]:
 
