@@ -141,7 +141,8 @@ summary["search_text"] = (
     summary["instructor"].fillna("").astype(str) + " " +
     summary["description"].fillna("").astype(str) + " " +
     summary["duration_min"].fillna("").astype(str) + " " +
-    summary["original_air_date"].fillna("").astype(str)
+    summary["original_air_date"].fillna("").astype(str) + " " +
+    summary["last_taken"].fillna("").astype(str)
 )
 summary["days_since_taken"] = (
     pd.Timestamp.today().normalize() -
