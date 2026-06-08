@@ -8,9 +8,6 @@ df = pd.read_csv("peloton_yoga_lookup.csv")
 df["last_taken"] = pd.to_datetime(df["last_taken"])
 df["original_air_date"] = pd.to_datetime(df["original_air_date"], errors="coerce")
 
-df["last_taken_display"] = df["last_taken"].dt.strftime("%m/%d/%Y")
-df["original_air_date_display"] = df["original_air_date"].dt.strftime("%m/%d/%Y")
-
 if "days_since_taken" not in df.columns:
     df["days_since_taken"] = (
         pd.Timestamp.today().normalize() - df["last_taken"]
