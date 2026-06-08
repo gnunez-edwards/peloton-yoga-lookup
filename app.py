@@ -16,8 +16,6 @@ if "days_since_taken" not in df.columns:
         pd.Timestamp.today().normalize() - df["last_taken"]
     ).dt.days
 
-st.title("Peloton Yoga Lookup")
-
 search = st.text_input(
     "Search by title, instructor, duration, air date, or description"
 )
@@ -40,11 +38,9 @@ sort_option = st.selectbox(
         "Most recently taken",
         "Newest class",
         "Oldest class",
-        "Shortest duration",
-        "Longest duration",
-        "Highest difficulty",
     ]
 )
+
 results = df.copy()
 
 if search:
@@ -75,50 +71,6 @@ elif sort_option == "Newest class":
 
 elif sort_option == "Oldest class":
     results = results.sort_values("original_air_date", ascending=True)
-
-elif sort_option == "Shortest duration":
-    results = results.sort_values("duration_min", ascending=True)
-
-elif sort_option == "Longest duration":
-    results = results.sort_values("duration_min", ascending=False)
-
-elif sort_option == "Highest difficulty":
-    results = results.sort_values("difficulty", ascending=False)
-
-st.subheader("Rediscover")
-
-min_days = st.slider(
-    "Only show classes I have not taken in at least this many days",
-    min_value=0,
-    max_value=365,
-    value=60
-)
-
-rediscover = results[results["days_since_taken"] >= min_days]
-
-if st.button("Pick a class for me"):
-    if rediscover.empty:
-        st.warning("No classes match that rediscovery filter.")
-    else:
-        pick = rediscover.sample(1).iloc[0]
-
-        st.success("Today's rediscovered class")
-
-        if pd.notna(pick.get("image_url")):
-            st.image(pick["image_url"], width=250)
-
-        st.write(f"{pick['title']}")
-        st.write(f"Instructor: {pick['instructor']}")
-        st.write(f"Duration: {pick['duration_min']} min")
-        st.write(f"Taken {pick['times_taken']}x")
-        st.write(
-            f"Last taken {pick['last_taken_display']} "
-            f"({pick['days_since_taken']} days ago)"
-        )
-
-        st.link_button("Open this class", pick["peloton_url"])
-
-st.divider()
 
 for _, row in results.iterrows():
     st.subheader(row["title"])
