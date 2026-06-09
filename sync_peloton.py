@@ -137,7 +137,7 @@ summary = (
 )
 summary["original_air_date"]=summary["original_air_date"].dt.strftime("%m/%d/%Y")
 summary["last_taken"]=summary["last_taken"].dt.strftime("%m/%d/%Y")
-summary["dates_taken"]=summary["dates_taken"].dt.strftime("%m/%d/%Y")
+
 
 summary["search_text"] = (
     summary["title"].fillna("").astype(str) + " " +
