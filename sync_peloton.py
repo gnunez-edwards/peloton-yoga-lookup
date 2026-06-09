@@ -109,11 +109,11 @@ for w in all_workouts:
         "duration_min": ride.get("duration", 0) // 60,
         "original_air_date": pd.to_datetime(
             ride.get("original_air_time"), unit="s", errors="coerce"
-        ).date(),
+        ),
         "description": ride.get("description"),
         "thumbnail_title": ride.get("thumbnail_title"),
         "difficulty": ride.get("difficulty_rating_avg"),
-        "taken_date": pd.to_datetime(w.get("created_at"), unit="s").date(),
+        "taken_date": pd.to_datetime(w.get("created_at"), unit="s"),
         "peloton_url": f"https://members.onepeloton.com/classes/yoga?modal=classDetailsModal&classId={ride.get('id')}",
         "image_url": ride.get("image_url"),
     })
@@ -136,8 +136,8 @@ summary = (
     .sort_values(["times_taken", "last_taken"], ascending=[False, False])
 )
 summary["original_air_date"]=summary["original_air_date"].dt.strftime("%m/%d/%Y")
-summary["last_taken"]=summary["original_air_date"].dt.strftime("%m/%d/%Y")
-summary["dates_taken"]=summary["original_air_date"].dt.strftime("%m/%d/%Y")
+summary["last_taken"]=summary["last_taken"].dt.strftime("%m/%d/%Y")
+summary["dates_taken"]=summary["dates_taken"].dt.strftime("%m/%d/%Y")
 
 summary["search_text"] = (
     summary["title"].fillna("").astype(str) + " " +
