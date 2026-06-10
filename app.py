@@ -77,7 +77,7 @@ for _, row in results.iterrows():
 
     st.write(f"Instructor: {row['instructor']}")
     st.write(f"Duration: {row['duration_min']} min")
-    st.write(f"Original Air Date: {row['original_air_date_display']}")
+    st.write(f"Original Air Date: {row['original_air_date']}")
     st.write(
         f"Taken {row['times_taken']}x • Last taken {row['last_taken_display']} "
         f"({row['days_since_taken']} days ago)"
