@@ -5,10 +5,8 @@ st.set_page_config(page_title="Peloton Yoga Lookup", layout="wide")
 
 df = pd.read_csv("peloton_yoga_lookup.csv")
 
-'''
-df["last_taken"] = pd.to_datetime(df["last_taken"])
-df["original_air_date"] = pd.to_datetime(df["original_air_date"], errors="coerce")
-'''
+# df["last_taken"] = pd.to_datetime(df["last_taken"])
+# df["original_air_date"] = pd.to_datetime(df["original_air_date"], errors="coerce")
 
 if "days_since_taken" not in df.columns:
     df["days_since_taken"] = (
