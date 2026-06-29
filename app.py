@@ -4,7 +4,8 @@ import streamlit as st
 st.set_page_config(page_title="Peloton Yoga Lookup", layout="wide")
 
 df = pd.read_csv("peloton_yoga_lookup.csv")
-
+df["last_taken"] = pd.to_datetime(df["last_taken"], errors="coerce")
+df["original_air_date"] = pd.to_datetime(df["original_air_date"], errors="coerce")
 # df["last_taken"] = pd.to_datetime(df["last_taken"])
 # df["original_air_date"] = pd.to_datetime(df["original_air_date"], errors="coerce")
 
@@ -74,7 +75,8 @@ for _, row in results.iterrows():
 
     if pd.notna(row.get("image_url")):
         st.image(row["image_url"], width=250)
-
+    st.write(f"Original Air Date: {row['original_air_date_display']}")
+    st.write(f"Taken {row['times_taken']}x • Last taken {row['last_taken_display']} "f"({row['days_since_taken']} days ago)")
     st.write(f"Instructor: {row['instructor']}")
     st.write(f"Duration: {row['duration_min']} min")
     st.write(f"Original Air Date: {row['original_air_date']}")
