@@ -135,9 +135,14 @@ summary = (
     .reset_index()
     .sort_values(["times_taken", "last_taken"], ascending=[False, False])
 )
-summary["original_air_date"]=summary["original_air_date"].dt.strftime("%m/%d/%Y")
-summary["last_taken"]=summary["last_taken"].dt.strftime("%m/%d/%Y")
 
+summary["original_air_date_display"] = summary["original_air_date"].dt.strftime("%m/%d/%Y")
+summary["last_taken_display"] = summary["last_taken"].dt.strftime("%m/%d/%Y")
+
+summary["days_since_taken"] = (
+    pd.Timestamp.today().normalize() -
+    summary["last_taken"].dt.normalize()
+).dt.days
 
 summary["search_text"] = (
     summary["title"].fillna("").astype(str) + " " +
